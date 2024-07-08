@@ -7,7 +7,7 @@ LIMIT 1;
 
 SELECT track_name, duration 
 FROM tracks
-WHERE duration >= '3.30';
+WHERE duration >= '3:30';
 
 SELECT collection_title, year_of_release
 FROM collections
@@ -17,9 +17,15 @@ SELECT performer
 FROM performers  
 WHERE performer NOT LIKE '% %';
 
-SELECT track_name 
-FROM tracks   
-WHERE track_name LIKE '%My%';
+SELECT track_name FROM tracks
+WHERE track_name ILIKE 'my %'
+OR track_name ILIKE '% my' 
+OR track_name ILIKE '% my %'
+OR track_name ILIKE 'my'
+OR track_name ILIKE 'мой %'
+OR track_name ILIKE '% мой' 
+OR track_name ILIKE '% мой %'
+OR track_name ILIKE 'мой';
 
 -- задача номер 3 
 
@@ -28,10 +34,9 @@ JOIN GenresPerformers ON performers.id = GenresPerformers.performer_id
 JOIN genres ON GenresPerformers.genres_id = genres.id
 GROUP BY musical_genres;
 
-SELECT year_of_release,COUNT(track_name) FROM albums 
-JOIN tracks ON albums.id = tracks.albums_id
-WHERE albums.year_of_release  >= 2019 AND albums.year_of_release <= 2020
-GROUP BY year_of_release;
+SELECT count(tracks.id)from tracks  
+join albums on albums_id = albums.id 
+WHERE year_of_release BETWEEN 2019 AND 2020;
 
 SELECT album_title,AVG(duration) FROM albums
 JOIN tracks ON albums.id = tracks.albums_id
